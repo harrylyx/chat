@@ -1,7 +1,7 @@
 /**
  * Created by Slane on 2016/10/16.
  */
-var address = 'ws://113.251.161.191:8000/soc';
+var address = 'ws://172.18.61.245:8000/';
 var ws = new WebSocket(address);
 ws.onmessage = function(event) {
     var content;
