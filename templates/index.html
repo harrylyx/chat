@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Happy To Chat</title>
-    <script src="scripts/connect.js"></script>
+    <!-- 手淘Flexible -->
+    <script src="//g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
 </head>
 <body>
-    <table id='message' border='1'></table>
+    <div id="J_message">
+        <div>Hello</div>
+        <div>name</div>
+    </div>
     <input id='chat'><button onclick='send()'>Send</button>
+    <!-- chat核心文件 -->
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/connect.js"></script>
 </body>
 </html>
