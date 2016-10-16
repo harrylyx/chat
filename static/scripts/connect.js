@@ -29,14 +29,7 @@ ws.onmessage = function(event) {
     // }[data['type']])();
 };
 
-$('#J_send').on('click touch', sendMessage);
-document.onkeydown=function() {
-    //绑定回车键
-    var e = event || window.event;
-    if (e.keyCode == 13) sendMessage();
-
-};
-function sendMessage () {
+$('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
     if (ele.value) {
         ws.send(ele.value);
@@ -44,4 +37,12 @@ function sendMessage () {
     } else {
         console.log("nothing");
     }
-}
+});
+document.onkeydown=function() {
+    //绑定回车键
+    var e = event || window.event;
+    if (e.keyCode == 13) {
+        $('#J_send').trigger('click');
+    };
+
+};
