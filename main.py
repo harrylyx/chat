@@ -6,6 +6,7 @@ import json
 import re
 import os
 import random
+import time
 
 
 
@@ -17,14 +18,14 @@ class Index(tornado.web.RequestHandler):
 class SocketHandler(tornado.websocket.WebSocketHandler):
     clients = set()
 
-    mname_n = {'1':'虎','2':'狼','3':'鼠','4':'鹿','5':'貂','6':'猴',
-                '7':'树懒','8':'斑马','9':'狗','10':'狐','11':'熊',
-                '12':'象','13':'豹子','14':'麝牛'}
+    mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
+                '7':'树懒','8':'斑马','9':'哈士奇','10':'狐狸','11':'白熊',
+                '12':'大象','13':'豹子','14':'牦牛'}
     mname_adj = {'1':'暖洋洋的','2':'醉醺醺的','3':'香喷喷的','4':'干巴巴的',
-                    '5':'沉甸甸的','6':'羞答答的','7':'亮晶晶的','10':'沉甸甸的',
-                    '11':'白花花的','12':'绿油油的','13':'黑黝黝的','14':'慢腾腾的',
-                    '15':'阴森森的','16':'皱巴巴的'}
-    mname = mname_adj[str(random.randint(1,16))]+mname_n[str(random.randint(1,14))]
+                    '5':'沉甸甸的','6':'羞答答的','7':'亮晶晶的','8':'沉甸甸的',
+                    '9':'白花花的','10':'绿油油的','11':'黑黝黝的','12':'慢腾腾的',
+                    '13':'阴森森的','14':'皱巴巴的'}
+    mname = mname_adj[str(random.randint(1,14))]+mname_n[str(random.randint(1,14))]
 
     @staticmethod
     def send_to_all(message):
@@ -53,6 +54,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         SocketHandler.send_to_all({
             'type': 'user',
+            'time':time.time(),
             'id':id(self),
             'name': SocketHandler.mname,
             'message': message,

@@ -10,10 +10,10 @@ ws.onmessage = function(event) {
     console.log(data);
     if(data.type == 'sys'){
         content = "<p>" + data.message + "</p>";
-        container.appendTo(content);
+        container.append(content);
     } else if (data.type == 'user') {
         content = "<p>" + data.message + "</p><p>" + data.name + "</p>";
-        container.appendTo(content);
+        container.append(content);
     }
     // ({
     //     'sys': function() {
