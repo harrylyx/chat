@@ -29,20 +29,24 @@ ws.onmessage = function(event) {
     // }[data['type']])();
 };
 
-$('#J_send').on('click touch', function() {
-    var ele = document.getElementById('chat');
-    if (ele.value) {
-        ws.send(ele.value);
-        ele.value = '';
-    } else {
-        console.log("nothing");
-    }
-});
-document.onkeydown=function() {
-    //绑定回车键
-    var e = event || window.event;
-    if (e.keyCode == 13) {
-        $('#J_send').trigger('click');
-    };
-
-};
+// $('#J_send').on('click touch', function() {
+//     var ele = document.getElementById('chat');
+//     if (ele.value) {
+//         ws.send(ele.value);
+//         ele.value = '';
+//     } else {
+//         console.log("nothing");
+//     }
+// });
+// document.onkeydown=function() {
+//     //绑定回车键
+//     var e = event || window.event;
+//     if (e.keyCode == 13) {
+//         $('#J_send').trigger('click');
+//     };
+//
+// };
+function send() {
+    ws.send(document.getElementById('chat').value);
+    document.getElementById('chat').value = '';
+}
