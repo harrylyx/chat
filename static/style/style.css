@@ -132,7 +132,8 @@ body{
     margin: 1vh 0;
     height: 7vh;
     display: inline-block;
-    width: 80%;
+    padding: 0 2.5vw;
+    width: 75%;
     border: none;
 }
 .footer > button {

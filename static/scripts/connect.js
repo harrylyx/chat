@@ -12,7 +12,7 @@ ws.onmessage = function(event) {
         content = "<p>" + data.message + "</p>";
         container.append(content);
     } else if (data.type == 'user') {
-        content = "<p>" + data.message + "</p><p>" + data.name + "</p>" + "<span>" + data.name + "</span>";
+        content = "<p>" + data.message + "</p><p>" + data.name + "</p>" + "<span>" + data.time + "</span>";
         container.append(content);
     }
     // ({
@@ -28,7 +28,20 @@ ws.onmessage = function(event) {
     //     },
     // }[data['type']])();
 };
-$('#J_send').on('click touch', function () {
-    ws.send(document.getElementById('chat').value);
-    document.getElementById('chat').value = '';
-})
+
+$('#J_send').on('click touch', sendMessage);
+document.onkeydown=function() {
+    //绑定回车键
+    var e = event || window.event;
+    if (e.keyCode == 13) sendMessage();
+
+};
+function sendMessage () {
+    var ele = document.getElementById('chat');
+    if (ele.value) {
+        ws.send(ele.value);
+        ele.value = '';
+    } else {
+        console.log("nothing");
+    }
+}
