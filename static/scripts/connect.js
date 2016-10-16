@@ -7,11 +7,12 @@ ws.onmessage = function(event) {
     var content;
     var data =  JSON.parse(event.data);
     var container = $('#J_message');
+    console.log(data);
     if(data.type == 'sys'){
         content = "<p>" + data.message + "</p>";
         container.appendTo(content);
     } else if (data.type == 'user') {
-        content = "<p>" + data.message + "</p><p>" + data.id + "</p>";
+        content = "<p>" + data.message + "</p><p>" + data.name + "</p>";
         container.appendTo(content);
     }
     // ({
