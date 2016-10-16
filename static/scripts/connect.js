@@ -1,7 +1,7 @@
 /**
  * Created by Slane on 2016/10/16.
  */
-var address = 'ws://172.18.61.245:8000/soc';
+var address = 'ws://113.251.161.191:8000/soc';
 var ws = new WebSocket(address);
 ws.onmessage = function(event) {
     var content;
@@ -12,7 +12,7 @@ ws.onmessage = function(event) {
         content = "<p>" + data.message + "</p>";
         container.append(content);
     } else if (data.type == 'user') {
-        content = "<p>" + data.message + "</p><p>" + data.name + "</p>";
+        content = "<p>" + data.message + "</p><p>" + data.name + "</p>" + "<span>" + data.name + "</span>";
         container.append(content);
     }
     // ({
@@ -28,7 +28,7 @@ ws.onmessage = function(event) {
     //     },
     // }[data['type']])();
 };
-function send() {
+$('#J_send').on('click touch', function () {
     ws.send(document.getElementById('chat').value);
     document.getElementById('chat').value = '';
-}
+})
