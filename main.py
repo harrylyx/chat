@@ -7,6 +7,7 @@ import re
 import os
 import random
 import time
+import markdown
 
 
 
@@ -17,22 +18,29 @@ class Index(tornado.web.RequestHandler):
 
 class SocketHandler(tornado.websocket.WebSocketHandler):
     clients = set()
-
-    mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
-                '7':'树懒','8':'斑马','9':'哈士奇','10':'狐狸','11':'白熊',
-                '12':'大象','13':'豹子','14':'牦牛'}
-    mname_adj = {'1':'暖洋洋的','2':'醉醺醺的','3':'香喷喷的','4':'干巴巴的',
-                    '5':'沉甸甸的','6':'羞答答的','7':'亮晶晶的','8':'沉甸甸的',
-                    '9':'白花花的','10':'绿油油的','11':'黑黝黝的','12':'慢腾腾的',
-                    '13':'阴森森的','14':'皱巴巴的'}
-    mname = mname_adj[str(random.randint(1,14))]+mname_n[str(random.randint(1,14))]
+    mdict = dict()
 
     @staticmethod
     def send_to_all(message):
         for c in SocketHandler.clients:
             c.write_message(json.dumps(message))
 
+    def get_name(self):
+        mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
+                '7':'树懒','8':'斑马','9':'哈士奇','10':'狐狸','11':'白熊',
+                '12':'大象','13':'豹子','14':'牦牛'}
+        mname_adj = {'1':'暖洋洋的','2':'醉醺醺的','3':'香喷喷的','4':'干巴巴的',
+                    '5':'沉甸甸的','6':'羞答答的','7':'亮晶晶的','8':'沉甸甸的',
+                    '9':'白花花的','10':'绿油油的','11':'黑黝黝的','12':'慢腾腾的',
+                    '13':'阴森森的','14':'皱巴巴的'}
+        mname = mname_adj[str(random.randint(1,14))]+mname_n[str(random.randint(1,14))]
+        if str(id(self)) in SocketHandler.mdict:
+            return SocketHandler.mdict[str(id(self))]
+        SocketHandler.mdict[str(id(self))]=mname
+        return SocketHandler.mdict[str(id(self))]
+
     def open(self):
+        mname = SocketHandler.get_name(self)
         self.write_message(json.dumps({
             'type': 'sys',
             'id':id(self),
@@ -40,24 +48,26 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         }))
         SocketHandler.send_to_all({
             'type': 'sys',
-            'message': SocketHandler.mname + ' has joined',
+            'message': mname + ' has joined',
         })
         SocketHandler.clients.add(self)
 
     def on_close(self):
+        mname = SocketHandler.get_name(self)
         SocketHandler.clients.remove(self)
         SocketHandler.send_to_all({
             'type': 'sys',
-            'message': SocketHandler.mname + ' has left',
+            'message': mname + ' has left',
         })
 
     def on_message(self, message):
+        mname = SocketHandler.get_name(self)
         SocketHandler.send_to_all({
             'type': 'user',
             'time':time.time(),
             'id':id(self),
-            'name': SocketHandler.mname,
-            'message': message,
+            'name': mname,
+            'message': markdown.markdown(message),
         })
 
 
@@ -70,5 +80,5 @@ if __name__ == '__main__':
         ('/soc', SocketHandler),
     ],**settings
     )
-    app.listen(8000,address="0.0.0.0")
+    app.listen(7000,address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()
