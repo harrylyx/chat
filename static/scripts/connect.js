@@ -7,7 +7,7 @@ ws.onmessage = function(event) {
     var content;
     var data =  JSON.parse(event.data);
     var container = $('#J_message');
-    // console.log(data);
+    console.log(data);
 
     if(data.type == 'sys'){
         content = '<p class="system-msg">'+ data.message + '</p>';
