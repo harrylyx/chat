@@ -14,10 +14,10 @@ ws.onmessage = function(event) {
         container.append(content);
     } else if (data.type == 'user') {
         content =   '<p class="user-msg">'+
-                        '<img class="user-img" src="../static/images/user.jpg" alt="">'+
+                        '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
                         '<span class="user-name">' + data.name + '</span>'+
-                        '<span class="user-time">' + getLocalTime(data.time) + '</span>'
-                        '<span class="user-message">' + data.message + '</span>'
+                        '<span class="user-time">' + getLocalTime(data.time) + '</span>'+
+                        '<span class="user-message">' + data.message + '</span>'+
                     '</p>'
         container.append(content);
     }
