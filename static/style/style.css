@@ -114,9 +114,12 @@ body{
 .header {
     height: 10vh;
     width: 100%;
-    background-color: #5682A3;
+    background-color: rgba(144, 144, 144, 0.15);
     color: #fff;
     text-align: center;
+}
+.header >h1 {
+    line-height: 10vh;
 }
 
 .content {
