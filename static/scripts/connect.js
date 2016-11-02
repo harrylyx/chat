@@ -16,7 +16,7 @@ ws.onmessage = function(event) {
         content =   '<p class="user-msg">'+
                         '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
                         '<span class="user-name">' + data.name + '</span>'+
-                        '<span class="user-time">' + getLocalTime(data.time) + '</span>'+
+                        '<span class="user-time">' + data.time + '</span>'+
                         '<span class="user-message">' + data.message + '</span>'+
                     '</p>'
         container.append(content);
@@ -26,17 +26,17 @@ ws.onmessage = function(event) {
         scrollTop: $('#J_message').height()
     },500);
 
-    //转化为标准时间函数
-    function getLocalTime(time) {
-        var date = new Date(time);
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds(); 
-        return Y+M+D+h+m+s
-    }
+    // //转化为标准时间函数
+    // function getLocalTime(time) {
+    //     var date = new Date(time);
+    //     Y = date.getFullYear() + '-';
+    //     M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    //     D = date.getDate() + ' ';
+    //     h = date.getHours() + ':';
+    //     m = date.getMinutes() + ':';
+    //     s = date.getSeconds(); 
+    //     return Y+M+D+h+m+s
+    // }
 };
 
 $('#J_send').on('click touch', function() {

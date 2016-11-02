@@ -44,6 +44,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         self.write_message(json.dumps({
             'type': 'sys',
             'id':id(self),
+            'person':len(SocketHandler.clients),
             'message': 'Welcome to WebSocket',
         }))
         SocketHandler.send_to_all({
@@ -57,6 +58,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         SocketHandler.clients.remove(self)
         SocketHandler.send_to_all({
             'type': 'sys',
+            'person':len(SocketHandler.clients),
             'message': mname + ' has left',
         })
 
@@ -64,7 +66,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         mname = SocketHandler.get_name(self)
         SocketHandler.send_to_all({
             'type': 'user',
-            'time':time.time(),
+            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,
             'id':id(self),
             'name': mname,
             'message': markdown.markdown(message),
