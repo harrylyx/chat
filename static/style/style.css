@@ -123,8 +123,10 @@ body{
 }
 
 .content {
+    padding: 0 40px;
     height: 80vh;
     overflow-y: scroll;
+    text-align: center;
 }
 
 .footer {
@@ -147,6 +149,7 @@ body{
     height: 8vh;
     display: inline-block;
     width: 20%;
+    cursor: pointer;
 }
 .btn {
     font-family: inherit;
@@ -181,3 +184,60 @@ body{
     z-index: -1;
     background:url('../images/bg.jpg');
 }*/
+
+.system-msg {
+    margin: 10px 0;
+    display: inline-block;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 12px;
+    background-color: rgba(255 ,255 ,255 ,.3);
+    border-radius: 10px;
+}
+.user-msg {
+    margin: 10px 0;
+    position: relative;
+    text-align: left;
+}
+.user-img {
+    position: absolute;
+    height: 50px;
+    border-radius: 50%;
+}
+.user-name {
+    position: absolute;
+    top: 10px;
+    left: 60px;
+    font-size: 14px;
+    display: inline-block;
+}
+.user-time {
+    position: absolute;
+    top: 10px;
+    left: 220px;
+    font-size: 14px;
+}
+.user-message {
+    position: relative;
+   padding: 10px 20px;
+   max-width: 90%;
+   display: inline-block;
+   font-size: 16px;
+   margin-top: 35px;
+   margin-left: 80px;
+   color: #000;
+   background: rgb(255, 255, 255);
+   border-radius: 10px;
+   word-wrap: break-word;
+}
+.user-message:before{
+   content: '';
+   position: absolute;
+   top: 13px;
+   left: -12px;
+   width: 0;
+   height: 0;
+   border-width: 15px;
+   border-style: solid;
+   border-color: #fff transparent transparent transparent;
+}

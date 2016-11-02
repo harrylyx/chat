@@ -7,15 +7,24 @@ ws.onmessage = function(event) {
     var content;
     var data =  JSON.parse(event.data);
     var container = $('#J_message');
-    console.log(data);
+    // console.log(data);
 
     if(data.type == 'sys'){
-        content = "<p>" + data.message + "</p>";
+        content = '<p class="system-msg">'+ data.message + '</p>';
         container.append(content);
     } else if (data.type == 'user') {
-        content = "<p>" + data.message + "</p><p>" + data.name + "</p>" + "<span>" + data.time + "</span>";
+        content =   '<p class="user-msg">'+
+                        '<img class="user-img" src="../static/images/user.jpg" alt="">'+
+                        '<span class="user-name">' + data.name + '</span>'+
+                        '<span class="user-time">' + data.time + '</span>'
+                        '<span class="user-message">' + data.message + '</span>'
+                    '</p>'
         container.append(content);
     }
+    //滚动到底部
+    $('#J_message').animate({
+        scrollTop: $('#J_message').height()
+    },500);
 
 };
 
