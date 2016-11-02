@@ -7,7 +7,7 @@ ws.onmessage = function(event) {
     var content;
     var data =  JSON.parse(event.data);
     var container = $('#J_message');
-    console.log(data);
+    console.log("收到数据："+data);
 
     if(data.type == 'sys'){
         content = '<p class="system-msg">'+ data.message + '</p>';
@@ -43,6 +43,7 @@ $('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
     if (ele.value) {
         ws.send(ele.value);
+        console.log("发送数据："+ele.value);
         ele.value = '';
     } else {
         console.log("nothing");
