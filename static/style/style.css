@@ -210,12 +210,14 @@ body{
     left: 60px;
     font-size: 14px;
     display: inline-block;
+    color: #fff;
 }
 .user-time {
     position: absolute;
     top: 10px;
     left: 220px;
     font-size: 14px;
+    color: #fff;
 }
 .user-message {
     position: relative;
