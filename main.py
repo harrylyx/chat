@@ -29,7 +29,10 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 message.update(itisme)
                 c.write_message(json.dumps(message))
             else:
-                del message['itisme']
+                try:
+                    del message['itisme']
+                except:
+                    pass
                 c.write_message(json.dumps(message))
 
     def get_name(self):
