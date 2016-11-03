@@ -10,15 +10,24 @@ ws.onmessage = function(event) {
     console.log(data);
 
     if(data.type == 'sys'){
-        content = '<p class="system-msg">'+ data.message + '</p>';
+        content = '<div><p class="system-msg">'+ data.message + '</p></div>';
         container.append(content);
     } else if (data.type == 'user') {
-        content =   '<p class="user-msg">'+
-                        '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
-                        '<span class="user-name">' + data.name + '</span>'+
-                        '<span class="user-time">' + data.time + '</span>'+
-                        '<div class="user-message">' + data.message + '</div>'+
-                    '</p>'
+        if (data.itisme == 1) {
+            content =   '<p class="user-msg">'+
+                            '<img class="user-img user-me-img" src="../static/images/user.jpg" alt="头像">'+
+                            '<span class="user-name user-me-name">' + data.name + '</span>'+
+                            '<span class="user-time user-me-time">' + data.time + '</span>'+
+                            '<div class="user-message user-me-message">' + data.message + '</div>'+
+                        '</p>'
+        } else {
+            content =   '<p class="user-msg">'+
+                            '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
+                            '<span class="user-name">' + data.name + '</span>'+
+                            '<span class="user-time">' + data.time + '</span>'+
+                            '<div class="user-message">' + data.message + '</div>'+
+                        '</p>'
+        }
         container.append(content);
     }
     //滚动到底部

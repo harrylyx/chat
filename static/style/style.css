@@ -224,10 +224,10 @@ body{
    padding: 10px 20px;
    max-width: 90%;
    font-size: 16px;
-   margin-top: 35px;
+   margin-top: 40px;
    margin-left: 80px;
    color: #000;
-   background: rgb(255, 255, 255);
+   background: rgba(255, 255, 255, .6);
    border-radius: 10px;
    word-wrap: break-word;
    text-align: left;
@@ -236,11 +236,33 @@ body{
 .user-message:before{
    content: '';
    position: absolute;
-   top: 13px;
-   left: -12px;
+   top: 8px;
+   left: -20px;
    width: 0;
    height: 0;
-   border-width: 15px;
+   border-width: 10px;
    border-style: solid;
-   border-color: #fff transparent transparent transparent;
+   border-color:  transparent rgba(255, 255, 255, .6) transparent transparent ;
+}
+
+.user-me-img {
+    right: 0;
+}
+.user-me-time {
+    right: auto;
+    left: 10px;
+}
+.user-me-name {
+    left: auto;
+    right: 90px;
+}
+.user-me-message {
+    margin-left: auto;
+    margin-right: 80px;
+    background: rgba(140,209,168,0.6);
+}
+.user-me-message:before{
+    left: auto;
+    right: -20px;
+    border-color: transparent transparent transparent rgba(140,209,168,0.6) ;
 }
