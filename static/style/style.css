@@ -230,6 +230,8 @@ body{
    background: rgb(255, 255, 255);
    border-radius: 10px;
    word-wrap: break-word;
+   text-align: left;
+   text-indent: 20px;
 }
 .user-message:before{
    content: '';
