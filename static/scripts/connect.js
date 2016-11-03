@@ -17,7 +17,7 @@ ws.onmessage = function(event) {
                         '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
                         '<span class="user-name">' + data.name + '</span>'+
                         '<span class="user-time">' + data.time + '</span>'+
-                        '<span class="user-message">' + data.message + '</span>'+
+                        '<div class="user-message">' + data.message + '</div>'+
                     '</p>'
         container.append(content);
     }
