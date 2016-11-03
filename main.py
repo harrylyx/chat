@@ -51,17 +51,19 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         mname = SocketHandler.get_name(self)
+        SocketHandler.clients.add(self)
         self.write_message(json.dumps({
             'type': 'sys',
             'id':id(self),
-            'person':len(SocketHandler.clients)+1,
+            'person':len(SocketHandler.clients),
             'message': 'Welcome to WebSocket',
         }))
         SocketHandler.send_to_all(self,{
             'type': 'sys',
+            'person':len(SocketHandler.clients),
             'message': mname + ' has joined',
         })
-        SocketHandler.clients.add(self)
+
 
     def on_close(self):
         mname = SocketHandler.get_name(self)
