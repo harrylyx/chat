@@ -12,6 +12,7 @@ ws.onmessage = function(event) {
     if(data.type == 'sys'){
         content = '<div><p class="system-msg">'+ data.message + '</p></div>';
         container.append(content);
+        $("#J-person").html(data.person);
     } else if (data.type == 'user') {
         if (data.itisme == 1) {
             content =   '<p class="user-msg">'+
