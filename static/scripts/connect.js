@@ -23,7 +23,7 @@ ws.onmessage = function(event) {
     }
     //滚动到底部
     $('#J_message').animate({
-        scrollTop: $('#J_message').height()
+        scrollTop: 999999999999999999999999999
     },500);
 
     // //转化为标准时间函数
@@ -49,11 +49,11 @@ $('#J_send').on('click touch', function() {
         console.log("nothing");
     }
 });
-document.onkeydown=function() {
-    //绑定回车键
-    var e = event || window.event;
-    if (e.keyCode == 13) {
-        $('#J_send').trigger('click');
-    };
+// document.onkeydown=function() {
+//     //绑定回车键
+//     var e = event || window.event;
+//     if (e.keyCode == 13) {
+//         $('#J_send').trigger('click');
+//     };
 
-};
+// };
