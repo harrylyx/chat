@@ -14,12 +14,13 @@ import markdown
 class Index(tornado.web.RequestHandler):
     def get(self):
         self.render('templates/index.html')
+        user_agent = self.request.headers['user-agent']
+        ip = self.request.remote_ip
 
 
 class SocketHandler(tornado.websocket.WebSocketHandler):
     clients = set()
     mdict = dict()
-
 
     def send_to_all(self,message):
         for c in SocketHandler.clients:
@@ -28,11 +29,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 message.update(itisme)
                 c.write_message(json.dumps(message))
             else:
+                del message['itisme']
                 c.write_message(json.dumps(message))
-
-    # def get(self):
-    #     user_agent = self.request.headers['user-agent']
-    #     ip = self.request.remote_ip
 
     def get_name(self):
         mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
