@@ -30,6 +30,10 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             else:
                 c.write_message(json.dumps(message))
 
+    # def get(self):
+    #     user_agent = self.request.headers['user-agent']
+    #     ip = self.request.remote_ip
+
     def get_name(self):
         mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
                 '7':'树懒','8':'斑马','9':'哈士奇','10':'狐狸','11':'白熊',
@@ -74,7 +78,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             'id':id(self),
             'name': mname,
-            'message': markdown.markdown(message),
+            'message': markdown.markdown(message,
+                                         extensions=['markdown.extensions.extra',
+                                                     'markdown.extensions.codehilite']),
         })
 
 
