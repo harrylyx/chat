@@ -75,7 +75,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         mname = SocketHandler.get_name(self)
         SocketHandler.send_to_all(self,{
             'type': 'user',
-            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            'time':time.strftime("%H:%M:%S", time.localtime()),
             'id':id(self),
             'name': mname,
             'message': markdown.markdown(message,
