@@ -68,7 +68,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         SocketHandler.clients.remove(self)
         SocketHandler.send_to_all(self,{
             'type': 'sys',
-            'person':len(SocketHandler.clients)-1,
+            'person':len(SocketHandler.clients),
             'message': mname + ' has left',
         })
 
