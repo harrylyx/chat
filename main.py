@@ -20,10 +20,15 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     clients = set()
     mdict = dict()
 
-    @staticmethod
-    def send_to_all(message):
+
+    def send_to_all(self,message):
         for c in SocketHandler.clients:
-            c.write_message(json.dumps(message))
+            if id(c) == id(self):
+                itisme = {'itisme':1}
+                message.update(itisme)
+                c.write_message(json.dumps(message))
+            else:
+                c.write_message(json.dumps(message))
 
     def get_name(self):
         mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
@@ -44,10 +49,10 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         self.write_message(json.dumps({
             'type': 'sys',
             'id':id(self),
-            'person':len(SocketHandler.clients),
+            'person':len(SocketHandler.clients)+1,
             'message': 'Welcome to WebSocket',
         }))
-        SocketHandler.send_to_all({
+        SocketHandler.send_to_all(self,{
             'type': 'sys',
             'message': mname + ' has joined',
         })
@@ -56,17 +61,17 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_close(self):
         mname = SocketHandler.get_name(self)
         SocketHandler.clients.remove(self)
-        SocketHandler.send_to_all({
+        SocketHandler.send_to_all(self,{
             'type': 'sys',
-            'person':len(SocketHandler.clients),
+            'person':len(SocketHandler.clients)-1,
             'message': mname + ' has left',
         })
 
     def on_message(self, message):
         mname = SocketHandler.get_name(self)
-        SocketHandler.send_to_all({
+        SocketHandler.send_to_all(self,{
             'type': 'user',
-            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,
+            'time':time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             'id':id(self),
             'name': mname,
             'message': markdown.markdown(message),
