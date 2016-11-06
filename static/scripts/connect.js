@@ -59,11 +59,11 @@ $('#J_send').on('click touch', function() {
         console.log("nothing");
     }
 });
-// document.onkeydown=function() {
-//     //绑定回车键
-//     var e = event || window.event;
-//     if (e.keyCode == 13) {
-//         $('#J_send').trigger('click');
-//     };
+document.onkeydown=function() {
+    //绑定回车键+ctrl键
+    var e = event || window.event;
+    if (e.keyCode == 13 &&  e.ctrlKey) {
+        $('#J_send').trigger('click');
+    };
 
-// };
+};
