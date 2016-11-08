@@ -16,7 +16,7 @@ ws.onmessage = function(event) {
     } else if (data.type == 'user') {
         if (data.itisme == 1) {
             content =   '<p class="user-msg">'+
-                            '<img class="user-img user-me-img" src="../static/images/user.jpg" alt="头像">'+
+                            '<img class="user-img user-me-img" src="../static/images/otherUser.jpg" alt="头像">'+
                             '<span class="user-name user-me-name">' + data.name + '</span>'+
                             '<span class="user-time user-me-time">' + data.time + '</span>'+
                             '<div class="user-message user-me-message">' + data.message + '</div>'+
