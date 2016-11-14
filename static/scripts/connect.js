@@ -15,19 +15,19 @@ ws.onmessage = function(event) {
         $("#J-person").html(data.person);
     } else if (data.type == 'user') {
         if (data.itisme == 1) {
-            content =   '<p class="user-msg">'+
+            content =   '<div><p class="user-time">'+ data.time + '</p></div>'+
+                        '<div class="user-msg user-me-msg">'+
                             '<img class="user-img user-me-img" src="../static/images/otherUser.jpg" alt="头像">'+
                             '<span class="user-name user-me-name">' + data.name + '</span>'+
-                            '<span class="user-time user-me-time">' + data.time + '</span>'+
                             '<div class="user-message user-me-message">' + data.message + '</div>'+
-                        '</p>'
+                        '</div>'
         } else {
-            content =   '<p class="user-msg">'+
+            content =   '<div><p class="user-time">'+ data.time + '</p></div>'+
+                        '<div class="user-msg">'+
                             '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
                             '<span class="user-name">' + data.name + '</span>'+
-                            '<span class="user-time">' + data.time + '</span>'+
                             '<div class="user-message">' + data.message + '</div>'+
-                        '</p>'
+                        '</div>'
         }
         container.append(content);
     }

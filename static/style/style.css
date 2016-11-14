@@ -113,7 +113,7 @@ body{
     background-color: #ecedf1;
 }
 .header {
-    height: 10vh;
+    height: 10%;
     width: 100%;
     background-color: #12b7f5;
     color: #fff;
@@ -128,14 +128,14 @@ body{
 }
 
 .content {
-    padding: 0 40px;
-    height: 80vh;
+    padding: 0 30px 0 20px;
+    height: 79%;
     overflow-y: scroll;
     text-align: center;
 }
 
 .footer {
-    height: 10vh;
+    height: 10%;
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -199,54 +199,57 @@ body{
     border-radius: 10px;
 }
 .user-msg {
-    margin: 10px 0;
+    margin: 0;
+    left: 10px;
     position: relative;
     text-align: left;
 }
 .user-img {
     position: absolute;
-    height: 50px;
+    height: 40px;
     border-radius: 50%;
 }
 .user-name {
     position: absolute;
-    top: 55px;
-    left: -10px;
+    top: 45px;
+    left: -20px;
     font-size: 14px;
     display: inline-block;
     color: #5e5f60;
 }
 .user-time {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: relative;
     font-size: 14px;
+    bottom: -16px;
+    line-height: 16px;
     color: #5e5f60;
+    text-align: center;
+    display: block;
 }
 .user-message {
     position: relative;
-   padding: 10px 20px;
-   max-width: 90%;
-   font-size: 16px;
-   margin-top: 40px;
-   margin-left: 80px;
+    padding: 10px;
+    max-width: 100%;
+    font-size: 16px;
+    margin-top: 70px;
+    margin-left: 0px;
    color: #000;
    background: #fff;
    border-radius: 10px;
    word-wrap: break-word;
    text-align: left;
-   text-indent: 20px;
+    display: inline-block;
 }
 .user-message:before{
    content: '';
    position: absolute;
-   top: 8px;
-   left: -20px;
+    left: 10px;
+    top: -18px;
+    border-color: transparent transparent #fff transparent;
    width: 0;
    height: 0;
    border-width: 10px;
    border-style: solid;
-   border-color:  transparent #fff transparent transparent ;
 }
 
 .user-me-img {
@@ -258,16 +261,23 @@ body{
 }
 .user-me-name {
     left: auto;
-    right: -10px;
+    right: -20px;
 }
 .user-me-message {
+    margin-top: 70px;
     margin-left: auto;
-    margin-right: 80px;
-    background: #02a7e3;
-    color: #fff;
+    margin-right: 0px;
+    background: #f5f5f5;
+    color: #000;
 }
 .user-me-message:before{
     left: auto;
-    right: -20px;
-    border-color: transparent transparent transparent #02a7e3;
+    top: -18px;
+    right: 10px;
+    border-color: transparent transparent #f5f5f5 transparent;
+}
+.user-me-msg {
+    left: 0;
+    right:10px;
+    text-align: right;
 }
