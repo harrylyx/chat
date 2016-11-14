@@ -1,7 +1,7 @@
 /**
  * Created by Slane on 2016/10/16.
  */
-var address = 'ws://127.0.0.1:7000/soc';
+var address = 'ws://chat.crazyc.cn/soc';
 var ws = new WebSocket(address);
 ws.onmessage = function(event) {
     var content;
