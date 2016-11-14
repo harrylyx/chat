@@ -39,7 +39,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         mname_n = {'1':'老虎','2':'狼','3':'仓鼠','4':'麋鹿','5':'猫','6':'猴子',
                 '7':'树懒','8':'斑马','9':'哈士奇','10':'狐狸','11':'白熊',
                 '12':'大象','13':'豹子','14':'牦牛'}
-        mname_adj = {'1':'暖洋洋的','2':'醉醺醺的','3':'香喷喷的','4':'干巴巴的',
+        mname_adj = {'1':'暖洋洋的','2':'醉醺醺的','3':'香喷喷的','4':'软绵绵的',
                     '5':'沉甸甸的','6':'羞答答的','7':'亮晶晶的','8':'沉甸甸的',
                     '9':'白花花的','10':'绿油油的','11':'黑黝黝的','12':'慢腾腾的',
                     '13':'阴森森的','14':'皱巴巴的'}
@@ -76,15 +76,36 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         mname = SocketHandler.get_name(self)
-        SocketHandler.send_to_all(self,{
-            'type': 'user',
-            'time':time.strftime("%H:%M:%S", time.localtime()),
-            'id':id(self),
-            'name': mname,
-            'message': markdown.markdown(message,
-                                         extensions=['markdown.extensions.extra',
-                                                     'markdown.extensions.codehilite']),
-        })
+        if '```' in message:
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':1,
+                'message': markdown.markdown(message,
+                                             extensions=['markdown.extensions.extra',
+                                                         'markdown.extensions.codehilite']),
+            })
+        elif '$$' in message:
+            message = '<img src="http://chart.googleapis.com/chart?cht=tx&chl= {0}" style="border:none;">'.format(message)
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':2,
+                'message': message,
+            })
+        else:
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':3,
+                'message': message,
+            })
 
 
 if __name__ == '__main__':
