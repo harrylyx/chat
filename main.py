@@ -76,7 +76,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         mname = SocketHandler.get_name(self)
-        if '```' in message:
+        if re.match('```.```',message):
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
@@ -87,7 +87,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                                              extensions=['markdown.extensions.extra',
                                                          'markdown.extensions.codehilite']),
             })
-        elif '$$' in message:
+        elif re.match('$$.$$',message):
             message = '<img src="http://chart.googleapis.com/chart?cht=tx&chl= {0}" style="border:none;">'.format(message)
             SocketHandler.send_to_all(self,{
                 'type': 'user',
