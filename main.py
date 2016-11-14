@@ -8,6 +8,7 @@ import os
 import random
 import time
 import markdown
+import sys
 
 
 
@@ -76,7 +77,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         mname = SocketHandler.get_name(self)
-        if re.search('^```.*```', str(message),re.S):
+        if re.search('^```.*```', str(message).encode('utf-8'),re.S):
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
@@ -87,7 +88,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                                              extensions=['markdown.extensions.extra',
                                                          'markdown.extensions.codehilite']),
             })
-        elif re.search('^\$\$.*\$\$$',str(message),re.S):
+        elif re.search('^\$\$.*\$\$$',str(message).encode('utf-8'),re.S):
             message = '<img src="http://chart.googleapis.com/chart?cht=tx&chl= {0}" style="border:none;">'.format(message)
             SocketHandler.send_to_all(self,{
                 'type': 'user',
@@ -109,6 +110,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
 
 if __name__ == '__main__':
+    reload(sys)
+    sys.setdefaultencoding('utf8')
     settings = dict(
         static_path = os.path.join(os.path.dirname(__file__), "static"),
     )
