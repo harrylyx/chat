@@ -1,7 +1,7 @@
 /**
  * Created by Slane on 2016/10/16.
  */
-var address = 'ws://127.0.0.1:7000/soc';
+var address = 'wss://chat.crazyc.cn/soc';
 var ws = new WebSocket(address);
 ws.onmessage = function(event) {
     var content;
@@ -48,6 +48,18 @@ ws.onmessage = function(event) {
     //     return Y+M+D+h+m+s
     // }
 };
+
+ws.onopen = function (event) {
+    //第一次连接  启动心跳包
+    keepOnline();
+}
+
+function keepOnline() {
+    // 心跳包函数，每30秒 呼叫一次服务器
+    setInterval(function () {
+        ws.send('c93c60882b37254bb13e80183f291af3');
+    },30000)
+}
 
 $('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
