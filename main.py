@@ -89,7 +89,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                                                          'markdown.extensions.codehilite']),
             })
         elif re.search('^\$\$.*\$\$$',str(message).encode('utf-8'),re.S):
-            message = '<img src="http://chart.googleapis.com/chart?cht=tx&chl= {0}" style="border:none;">'.format(message)
+            message = '<img src="http://www.forkosh.com/mathtex.cgi?{0}" style="border:none;">'.format(message)
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
