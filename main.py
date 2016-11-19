@@ -116,7 +116,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': mname,
+                'name': 'weather bot',
                 'messageType':3,
                 'message': '天气：<br>'+message_bot,
             })
@@ -134,7 +134,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': mname,
+                'name': 'news bot',
                 'messageType':3,
                 'message': '今日新闻：<br>'+message_bot,
             })
