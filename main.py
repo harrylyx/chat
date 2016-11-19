@@ -9,6 +9,10 @@ import random
 import time
 import markdown
 import sys
+sys.path.append("static/bot")
+import weather
+import news
+
 
 
 
@@ -98,7 +102,30 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'messageType':2,
                 'message': message,
             })
+        elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
+            message = weather.getweather().replace('\n','<br>')
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':2,
+                'message': '天气：<br>'+message,
+            })
+        elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
+            message = news.getnews().replace('\n','<br>')
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':2,
+                'message': '今日新闻：<br>'+message,
+            })
+        elif message == 'c93c60882b37254bb13e80183f291af3':
+            pass
         else:
+            message = message.replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
@@ -120,5 +147,5 @@ if __name__ == '__main__':
         ('/soc', SocketHandler),
     ],**settings
     )
-    app.listen(7001,address='0.0.0.0')
+    app.listen(7000,address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()
