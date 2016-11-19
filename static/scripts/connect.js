@@ -30,6 +30,15 @@ ws.onmessage = function(event) {
                         '</div>'
         }
         container.append(content);
+    } else if (data.type == 'bot') {
+        //机器人
+        content =   '<div><p class="user-time">'+ data.time + '</p></div>'+
+            '<div class="user-msg">'+
+            '<img class="user-img" style="border-radius: 50%" src="../static/images/robot.png" alt="头像">'+
+            '<span class="user-name">' + data.name + '</span>'+
+            '<div class="user-message user-robot-msg">' + data.message + '</div>'+
+            '</div>'
+        container.append(content);
     }
     //滚动到底部
     $('#J_message').animate({

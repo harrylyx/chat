@@ -290,3 +290,11 @@ pre{
     right:10px;
     text-align: right;
 }
+.user-robot-msg a {
+    font-size: 14px;
+    line-height: 20px;
+    color: #12b7f5;
+}
+.user-robot-msg a:visited {
+    color: #990073;
+}
