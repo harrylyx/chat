@@ -9,6 +9,10 @@ import random
 import time
 import markdown
 import sys
+sys.path.append("static/bot")
+import weather
+import news
+
 
 
 
@@ -98,7 +102,46 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'messageType':2,
                 'message': message,
             })
+        elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
+            message_bot = weather.getweather().replace('\n','<br>')
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':3,
+                'message': message,
+            })
+            SocketHandler.send_to_all(self,{
+                'type': 'bot',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self)+12138,
+                'name': 'weather bot',
+                'messageType':3,
+                'message': '天气：<br>'+message_bot,
+            })
+        elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
+            message_bot = news.getnews().replace('\n','<br>')
+            SocketHandler.send_to_all(self,{
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':3,
+                'message': message,
+            })
+            SocketHandler.send_to_all(self,{
+                'type': 'bot',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self)+12138,
+                'name': 'news bot',
+                'messageType':3,
+                'message': '今日新闻：<br>'+message_bot,
+            })
+        elif message == 'c93c60882b37254bb13e80183f291af3':
+            pass
         else:
+            message = message.replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
