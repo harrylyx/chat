@@ -103,24 +103,40 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'message': message,
             })
         elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
-            message = weather.getweather().replace('\n','<br>')
+            message_bot = weather.getweather().replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self),
                 'name': mname,
-                'messageType':2,
-                'message': '天气：<br>'+message,
+                'messageType':3,
+                'message': message,
+            })
+            SocketHandler.send_to_all(self,{
+                'type': 'bot',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self)+12138,
+                'name': mname,
+                'messageType':3,
+                'message': '天气：<br>'+message_bot,
             })
         elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
-            message = news.getnews().replace('\n','<br>')
+            message_bot = news.getnews().replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self),
                 'name': mname,
-                'messageType':2,
-                'message': '今日新闻：<br>'+message,
+                'messageType':3,
+                'message': message,
+            })
+            SocketHandler.send_to_all(self,{
+                'type': 'bot',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self)+12138,
+                'name': mname,
+                'messageType':3,
+                'message': '今日新闻：<br>'+message_bot,
             })
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
