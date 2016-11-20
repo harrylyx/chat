@@ -57,9 +57,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def open(self):
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
-        user_agent = self.request.headers['user-agent']
+        user_agent = self.request.headers['user-agent'].replace("\'","|")
         ip = self.request.remote_ip
-        cursor.execute("insert into online (id,ip,user_agent) values (%d,%s,'%s')"%(id(self),ip,user_agent))
+        cursor.execute("insert into online (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
         cx.close()
@@ -81,13 +81,13 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_close(self):
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
-        user_agent = self.request.headers['user-agent']
+        user_agent = self.request.headers['user-agent'].replace("\'","|")
         ip = self.request.remote_ip
         try:
             cursor.execute("delete from where id == {0}".format(id(self)))
         except:
             pass
-        cursor.execute("insert into offline (id,ip,user_agent) values (%d,%s,'%s')"%(id(self),ip,user_agent))
+        cursor.execute("insert into offline (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
         cx.close()
