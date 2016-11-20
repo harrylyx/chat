@@ -42,8 +42,10 @@ ws.onmessage = function(event) {
         container.append(content);
     }
     //滚动到底部
-    $('#J_message').animate({
-        scrollTop: 999999999999999999999999999
+    var container = $('#J_message'),
+        scrollTo = $('#J_message div:last');
+    container.animate({
+        scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
     },500);
 
     // //转化为标准时间函数
@@ -76,7 +78,9 @@ $('#J_send').on('click touch', function() {
     if (ele.value) {
         ws.send(ele.value);
         console.log("发送数据："+ele.value);
+        // 清空数据，重置高度
         ele.value = '';
+        ele.style.height = "50px";
     } else {
         console.log("nothing");
     }
@@ -84,12 +88,12 @@ $('#J_send').on('click touch', function() {
 document.onkeydown=function() {
     //绑定回车键+ctrl键
     var e = event || window.event;
-    // if (e.keyCode == 13 &&  e.ctrlKey) {
-    //     $('#J_send').trigger('click');
-    // };
-    if (e.keyCode == 13) {
-        //回车键 触发发送按钮
+    if (e.keyCode == 13 &&  e.ctrlKey) {
         $('#J_send').trigger('click');
     };
+    // if (e.keyCode == 13) {
+    //     //回车键 触发发送按钮
+    //     $('#J_send').trigger('click');
+    // };
 
 };

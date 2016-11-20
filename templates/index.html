@@ -41,13 +41,18 @@
 
         </div>
         <div class="footer">
-            <textarea id='chat'></textarea><button class="btn" id="J_send">Send</button>
+            <textarea id='chat'  style='max-height: 100px;resize: none;'></textarea><button class="btn" id="J_send">Send</button>
         </div>
 	    <!-- <div class="main-bg"></div> -->
     </div>
     
     <script src="../static/scripts/jquery.min.js"></script>
     <!-- chat核心文件 -->
-    <script src="../static/scripts/connect.js"></script> 
+    <script src="../static/scripts/connect.js"></script>
+
+    <script src="../static/scripts/autosize.min.js"></script>
+    <script>
+        autosize(document.querySelectorAll('textarea'));
+    </script>
 </body> 
 </html>
