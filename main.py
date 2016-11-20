@@ -83,7 +83,10 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cursor = cx.cursor()
         user_agent = self.request.headers['user-agent']
         ip = self.request.remote_ip
-        cursor.execute("delete from where id == {0}".format(id(self)))
+        try:
+            cursor.execute("delete from where id == {0}".format(id(self)))
+        except:
+            pass
         cursor.execute("insert into offline (id,ip,user_agent) values ({0},{1},{2})".format(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
