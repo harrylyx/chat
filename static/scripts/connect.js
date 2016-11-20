@@ -1,7 +1,8 @@
 /**
  * Created by Slane on 2016/10/16.
  */
-var address = 'wss://chat.crazyc.cn/soc';
+// var address = 'wss://chat.crazyc.cn/soc';
+var address = 'ws://127.0.0.1:7001/soc';
 var ws = new WebSocket(address);
 ws.onmessage = function(event) {
     var content;
@@ -83,7 +84,11 @@ $('#J_send').on('click touch', function() {
 document.onkeydown=function() {
     //绑定回车键+ctrl键
     var e = event || window.event;
-    if (e.keyCode == 13 &&  e.ctrlKey) {
+    // if (e.keyCode == 13 &&  e.ctrlKey) {
+    //     $('#J_send').trigger('click');
+    // };
+    if (e.keyCode == 13) {
+        //回车键 触发发送按钮
         $('#J_send').trigger('click');
     };
 
