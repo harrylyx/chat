@@ -124,7 +124,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                                                          'markdown.extensions.codehilite']),
             })
         elif re.search('^\$\$.*\$\$$',str(message).encode('utf-8'),re.S):
-            message = '<img src="http://www.forkosh.com/mathtex.cgi?{0}" style="border:none;">'.format(message)
+
+            message = '<img src="https://l.wordpress.com/latex.php?bg=ffffff&fg=000000&s=0&latex={0}" style="border:none;">'.format(message[2:-2])
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
