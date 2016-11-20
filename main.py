@@ -142,7 +142,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'id':id(self)+12138,
                 'name': 'Weather robot',
                 'messageType':3,
-                'message': '天气：<br>'+message_bot,
+                'message': "%s's weather：<br>"%(local)+message_bot,
             })
         elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
             message_bot = news.getnews().replace('\n','<br>')
@@ -160,7 +160,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'id':id(self)+12138,
                 'name': 'News robot',
                 'messageType':3,
-                'message': '今日新闻：<br>'+message_bot,
+                'message': 'Today News：<br>'+message_bot,
             })
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
