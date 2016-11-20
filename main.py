@@ -178,6 +178,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self),
+                'itisme':1,
                 'name': mname,
                 'messageType':3,
                 'message': message,
