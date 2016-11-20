@@ -8,7 +8,7 @@ ws.onmessage = function(event) {
     var content;
     var data =  JSON.parse(event.data);
     var container = $('#J_message');
-    console.log(data);
+    // console.log(data);
 
     if(data.type == 'sys'){
         content = '<div><p class="system-msg">'+ data.message + '</p></div>';
@@ -75,17 +75,18 @@ function keepOnline() {
 
 $('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
-    if (ele.value) {
+    var safeVal = filterXSS(ele.value);
+    if (safeVal) {
         //发送前过滤XSS
-        var safeVal = filterXSS(ele.value);
         //发送
         ws.send(safeVal);
-        console.log("发送数据："+ele.value);
+        // console.log("发送数据："+ele.value);
         // 清空数据，重置高度
         ele.value = '';
         ele.style.height = "50px";
     } else {
-        console.log("nothing");
+        // alert("内容非法！");
+        // console.log("nothing");
     }
 });
 document.onkeydown=function() {
