@@ -8,6 +8,7 @@ import os
 import random
 import time
 import markdown
+import MySQLdb
 import sys
 sys.path.append("static/bot")
 import weather
@@ -19,8 +20,7 @@ import news
 class Index(tornado.web.RequestHandler):
     def get(self):
         self.render('templates/index.html')
-        user_agent = self.request.headers['user-agent']
-        ip = self.request.remote_ip
+
 
 
 class SocketHandler(tornado.websocket.WebSocketHandler):
@@ -55,6 +55,14 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         return SocketHandler.mdict[str(id(self))]
 
     def open(self):
+        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cursor = cx.cursor()
+        user_agent = self.request.headers['user-agent']
+        ip = self.request.remote_ip
+        cursor.execute("insert into online (id,ip,user_agent) values ({0},{1},{2})".format(id(self),ip,user_agent))
+        cursor.close()
+        cx.commit()
+        cx.close()
         mname = SocketHandler.get_name(self)
         SocketHandler.clients.add(self)
         self.write_message(json.dumps({
@@ -71,6 +79,15 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
 
     def on_close(self):
+        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cursor = cx.cursor()
+        user_agent = self.request.headers['user-agent']
+        ip = self.request.remote_ip
+        cursor.execute("delete from where id == {0}".format(id(self)))
+        cursor.execute("insert into offline (id,ip,user_agent) values ({0},{1},{2})".format(id(self),ip,user_agent))
+        cursor.close()
+        cx.commit()
+        cx.close()
         mname = SocketHandler.get_name(self)
         SocketHandler.clients.remove(self)
         SocketHandler.send_to_all(self,{
@@ -116,7 +133,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': 'weather bot',
+                'name': 'Weather robot',
                 'messageType':3,
                 'message': '天气：<br>'+message_bot,
             })
@@ -134,7 +151,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': 'news bot',
+                'name': 'News robot',
                 'messageType':3,
                 'message': '今日新闻：<br>'+message_bot,
             })
