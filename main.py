@@ -84,7 +84,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         user_agent = self.request.headers['user-agent'].replace("\'","|")
         ip = self.request.remote_ip
         try:
-            cursor.execute("delete from where id == {0}".format(id(self)))
+            cursor.execute("delete from online where id = %d"%(id(self)))
         except:
             pass
         cursor.execute("insert into offline (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
