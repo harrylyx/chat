@@ -93,7 +93,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
         user_agent = self.request.headers['user-agent'].replace("\'","|")
-        ip = self.request.remote_ip
+        ip = self.request.headers.get("X-Real-IP")
         try:
             cursor.execute("delete from online where id = %d"%(id(self)))
         except:
