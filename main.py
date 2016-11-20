@@ -59,7 +59,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cursor = cx.cursor()
         user_agent = self.request.headers['user-agent']
         ip = self.request.remote_ip
-        cursor.execute("insert into online (id,ip,user_agent) values ({0},{1},{2})".format(id(self),ip,user_agent))
+        cursor.execute("insert into online (id,ip,user_agent) values (%d,%s,'%s')"%(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
         cx.close()
@@ -87,7 +87,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cursor.execute("delete from where id == {0}".format(id(self)))
         except:
             pass
-        cursor.execute("insert into offline (id,ip,user_agent) values ({0},{1},{2})".format(id(self),ip,user_agent))
+        cursor.execute("insert into offline (id,ip,user_agent) values (%d,%s,'%s')"%(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
         cx.close()
