@@ -199,8 +199,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             pass
         else:
             message = message.replace('\n','<br>')
-            # cleaner = lxml.html.clean.Cleaner(style=True, scripts=True,page_structure=False, safe_attrs_only=False)
-            # message = cleaner.clean_html(message)
+            cleaner = lxml.html.clean.Cleaner(style=True, scripts=True, page_structure=False, safe_attrs_only=False)
+            message = cleaner.clean_html(message)
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
