@@ -58,7 +58,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
         user_agent = self.request.headers['user-agent'].replace("\'","|")
-        ip = self.request.remote_ip
+        ip = self.request.headers.get("X-Real-IP")
         cursor.execute("insert into online (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
         cursor.close()
         cx.commit()
