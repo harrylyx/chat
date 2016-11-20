@@ -8,6 +8,7 @@ import os
 import random
 import time
 import markdown
+import MySQLdb
 import sys
 sys.path.append("static/bot")
 import weather
@@ -19,8 +20,7 @@ import news
 class Index(tornado.web.RequestHandler):
     def get(self):
         self.render('templates/index.html')
-        user_agent = self.request.headers['user-agent']
-        ip = self.request.remote_ip
+
 
 
 class SocketHandler(tornado.websocket.WebSocketHandler):
@@ -55,6 +55,14 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         return SocketHandler.mdict[str(id(self))]
 
     def open(self):
+        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cursor = cx.cursor()
+        user_agent = self.request.headers['user-agent'].replace("\'","|")
+        ip = self.request.headers.get("X-Real-IP")
+        cursor.execute("insert into online (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
+        cursor.close()
+        cx.commit()
+        cx.close()
         mname = SocketHandler.get_name(self)
         SocketHandler.clients.add(self)
         self.write_message(json.dumps({
@@ -71,6 +79,18 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 
 
     def on_close(self):
+        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cursor = cx.cursor()
+        user_agent = self.request.headers['user-agent'].replace("\'","|")
+        ip = self.request.remote_ip
+        try:
+            cursor.execute("delete from online where id = %d"%(id(self)))
+        except:
+            pass
+        cursor.execute("insert into offline (id,ip,user_agent) values (%d,'%s','%s')"%(id(self),ip,user_agent))
+        cursor.close()
+        cx.commit()
+        cx.close()
         mname = SocketHandler.get_name(self)
         SocketHandler.clients.remove(self)
         SocketHandler.send_to_all(self,{
@@ -103,7 +123,11 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'message': message,
             })
         elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
-            message_bot = weather.getweather().replace('\n','<br>')
+            try:
+                local = message[message.index(' ')+1:]
+            except:
+                local='chongqing'
+            message_bot = weather.getweather(local).replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
@@ -116,9 +140,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': 'weather bot',
+                'name': 'Weather robot',
                 'messageType':3,
-                'message': '天气：<br>'+message_bot,
+                'message': "%s's weather：<br>"%(local)+message_bot,
             })
         elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
             message_bot = news.getnews().replace('\n','<br>')
@@ -134,9 +158,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': 'news bot',
+                'name': 'News robot',
                 'messageType':3,
-                'message': '今日新闻：<br>'+message_bot,
+                'message': 'Today News：<br>'+message_bot,
             })
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
