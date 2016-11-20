@@ -9,6 +9,7 @@ import random
 import time
 import markdown
 import MySQLdb
+import lxml.html.clean
 import sys
 sys.path.append("static/bot")
 import weather
@@ -19,6 +20,8 @@ import news
 
 class Index(tornado.web.RequestHandler):
     def get(self):
+        self.set_cookie('foo', 'bar', httponly=True, secure=True)
+        self.set_secure_cookie('foo', 'bar', httponly=True, secure=True)
         self.render('templates/index.html')
 
 
@@ -70,6 +73,14 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             'id':id(self),
             'person':len(SocketHandler.clients),
             'message': 'Welcome to WebSocket',
+        }))
+        self.write_message(json.dumps({
+            'type': 'bot',
+            'time':time.strftime("%H:%M:%S", time.localtime()),
+            'id':id(self)+12138,
+            'name': 'Weather robot',
+            'messageType':3,
+            'message': "欢迎!我是这里的机器人,管理着这个聊天室<br>如果你是第一次来到这里，发送\\help获取使用帮助",
         }))
         SocketHandler.send_to_all(self,{
             'type': 'sys',
@@ -162,10 +173,28 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'messageType':3,
                 'message': 'Today News：<br>'+message_bot,
             })
+        elif re.search('^\\\help',str(message).encode('utf-8'),re.S):
+            self.write_message(json.dumps({
+                'type': 'user',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self),
+                'name': mname,
+                'messageType':3,
+                'message': message,
+            }))
+            self.write_message(json.dumps({
+                'type': 'bot',
+                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'id':id(self)+12138,
+                'name': 'News robot',
+                'messageType':3,
+                'message': '使用帮助<br>本聊天室支持markdown语法发送代码<br>example:<br>```python<br>hello world',
+            }))
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
         else:
             message = message.replace('\n','<br>')
+            message = lxml.html.clean.Cleaner(message)
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
@@ -182,6 +211,10 @@ if __name__ == '__main__':
     settings = dict(
         static_path = os.path.join(os.path.dirname(__file__), "static"),
     )
+    settings = {
+        "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+        "xsrf_cookies": True,
+    }
     app = tornado.web.Application([
         ('/', Index),
         ('/soc', SocketHandler),
