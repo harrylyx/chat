@@ -329,6 +329,7 @@ pre {
     font-size: 14px;
     line-height: 20px;
     color: #12b7f5;
+    text-decoration: none;
 }
 
 .user-robot-msg a:visited {
