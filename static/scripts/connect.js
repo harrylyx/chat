@@ -76,7 +76,10 @@ function keepOnline() {
 $('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
     if (ele.value) {
-        ws.send(ele.value);
+        //发送前过滤XSS
+        var safeVal = filterXSS(ele.value);
+        //发送
+        ws.send(safeVal);
         console.log("发送数据："+ele.value);
         // 清空数据，重置高度
         ele.value = '';
