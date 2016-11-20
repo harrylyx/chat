@@ -78,7 +78,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             'type': 'bot',
             'time':time.strftime("%H:%M:%S", time.localtime()),
             'id':id(self)+12138,
-            'name': 'Weather robot',
+            'name': 'Master robot',
             'messageType':3,
             'message': "欢迎!我是这里的机器人,管理着这个聊天室<br>如果你是第一次来到这里，发送\\help获取使用帮助",
         }))
@@ -186,9 +186,12 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'type': 'bot',
                 'time':time.strftime("%H:%M:%S", time.localtime()),
                 'id':id(self)+12138,
-                'name': 'News robot',
+                'name': 'Master robot',
                 'messageType':3,
-                'message': '使用帮助<br>本聊天室支持markdown语法发送代码<br>example:<br>```python<br>hello world',
+                'message': '''使用帮助:<br>本聊天室支持markdown语法发送代码<br>example:
+                                <br>```python<br>print('Hello world!')<br>```
+                                <br>支持使用LaTeX语法发送公式<br>example:<br>$$h = \\frac{1}{2}gt^2$$
+                                <br>支持使用\\weather 地点(拼音)查看天气<br>支持使用\\news查看新闻''',
             }))
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
