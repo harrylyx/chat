@@ -123,7 +123,11 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'message': message,
             })
         elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
-            message_bot = weather.getweather().replace('\n','<br>')
+            try:
+                local = message[message.index(' ')+1:]
+            except:
+                local='chongqing'
+            message_bot = weather.getweather(local).replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
                 'time':time.strftime("%H:%M:%S", time.localtime()),

@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 import sys
 
 
-def getweather():
+def getweather(local):
     reload(sys)
     sys.setdefaultencoding('utf8')
-    content = urllib2.urlopen('http://m.cncn.com/tianqi/chongqing').read()
+    content = urllib2.urlopen('http://m.cncn.com/tianqi/%s'%(local)).read()
     soup = BeautifulSoup(content,"lxml")
     result = ''
     r = ''
@@ -23,4 +23,4 @@ def getweather():
 
 
 if __name__ == "__main__":
-    getweather()
+    getweather('chongqing')
