@@ -82,7 +82,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cx.close()
             super(self).on_close()
         else:
-            cursor.execute("insert into online (id,ip,user_agent,time) values (%d,'%s','%s',%s)"
+            cursor.execute("insert into online (id,ip,user_agent,time) values (%d,'%s','%s','%s')"
                            %(id(self),ip,user_agent,timenow))
             cursor.close()
             cx.commit()
@@ -122,7 +122,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cursor.execute("delete from online where id = %d"%(id(self)))
         except:
             pass
-        cursor.execute("insert into offline (id,ip,user_agent,time) values (%d,'%s','%s',%s)"
+        cursor.execute("insert into offline (id,ip,user_agent,time) values (%d,'%s','%s','%s')"
                        %(id(self),ip,user_agent,timenow))
         cursor.close()
         cx.commit()
