@@ -228,13 +228,12 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cleaner = lxml.html.clean.Cleaner(style=True, scripts=True, frames = True,
                                               forms = True,page_structure=False, safe_attrs_only=False)
             message = cleaner.clean_html(message)
-            feedback = message[13:]
+            feedback = message[13:-4]
             user_agent = self.request.headers['user-agent'].replace("\'","|")
             ip = self.request.headers.get("X-Real-IP")
             cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
             cursor = cx.cursor()
-            cursor.execute("insert into feedback (id,ip,user_agent,time,message) values (%d,'%s','%s','%s','%s')"
-                           %(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime()),feedback))
+            cursor.execute("insert into feedback (id,ip,user_agent,time,message) values (%d,'%s','%s','%s','%s')"%(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime()),feedback))
             cursor.close()
             cx.commit()
             cx.close()
