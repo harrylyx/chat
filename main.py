@@ -164,7 +164,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             try:
                 local = message[message.index(' ')+1:]
             except:
-                local='chongqing'
+                local='beijing'
             message_bot = weather.getweather(local).replace('\n','<br>')
             SocketHandler.send_to_all(self,{
                 'type': 'user',
