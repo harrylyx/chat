@@ -63,8 +63,11 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         ip = self.request.headers.get("X-Real-IP")
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
-        cursor.execute('select ip from blacklist')
-        values = cursor.fetchall()  # 获取查询的值
+        try:
+            cursor.execute('select ip from blacklist')
+            values = cursor.fetchall()  # 获取查询的值
+        except:
+            values=()
         ip = tuple("'"+str(ip)+"'"+',')
         timenow = time.strftime("%H:%M:%S", time.localtime())
         if ip in values:
