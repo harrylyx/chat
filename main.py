@@ -80,7 +80,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             'id':id(self)+12138,
             'name': 'Master robot',
             'messageType':3,
-            'message': '''欢迎你,%s!我是这里的机器人,管理着这个聊天室
+            'message': '''欢迎你,%s!
+                       <br>我是这里的机器人,管理着这个聊天室
                        <br>如果你是第一次来到这里，可以发送\\help获取使用帮助
                        <br>不要乱搞哦，我会看着你的.'''%(mname),
         }))
