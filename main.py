@@ -68,9 +68,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             values = cursor.fetchall()  # 获取查询的值
         except:
             values=()
-        ip = tuple("'"+str(ip)+"'"+',')
+        ip_c = tuple("'"+str(ip)+"'"+',')
         timenow = time.strftime("%H:%M:%S", time.localtime())
-        if ip in values:
+        if ip_c in values:
             self.write_message(json.dumps({
                 'type': 'bot',
                 'time':timenow,
