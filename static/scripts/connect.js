@@ -11,7 +11,7 @@ ws.onmessage = function(event) {
     // console.log(data);
 
     if(data.type == 'sys'){
-        content = '<div><p class="system-msg">'+ filterXSS(data.message) + '</p></div>';
+        content = '<div><p class="system-msg">'+ data.message + '</p></div>';
         container.append(content);
         $("#J-person").html(data.person);
     } else if (data.type == 'user') {
@@ -20,14 +20,14 @@ ws.onmessage = function(event) {
                         '<div class="user-msg user-me-msg">'+
                             '<img class="user-img user-me-img" src="../static/images/otherUser.jpg" alt="头像">'+
                             '<span class="user-name user-me-name">' + data.name + '</span>'+
-                            '<div class="user-message user-me-message">' + filterXSS(data.message) + '</div>'+
+                            '<div class="user-message user-me-message">' + data.message + '</div>'+
                         '</div>'
         } else {
             content =   '<div><p class="user-time">'+ data.time + '</p></div>'+
                         '<div class="user-msg">'+
                             '<img class="user-img" src="../static/images/user.jpg" alt="头像">'+
                             '<span class="user-name">' + data.name + '</span>'+
-                            '<div class="user-message">' + filterXSS(data.message) + '</div>'+
+                            '<div class="user-message">' + data.message + '</div>'+
                         '</div>'
         }
         container.append(content);
@@ -37,7 +37,7 @@ ws.onmessage = function(event) {
             '<div class="user-msg">'+
             '<img class="user-img" style="border-radius: 50%" src="../static/images/robot.png" alt="头像">'+
             '<span class="user-name">' + data.name + '</span>'+
-            '<div class="user-message user-robot-msg">' + filterXSS(data.message) + '</div>'+
+            '<div class="user-message user-robot-msg">' + data.message + '</div>'+
             '</div>'
         container.append(content);
     }
@@ -75,7 +75,8 @@ function keepOnline() {
 
 $('#J_send').on('click touch', function() {
     var ele = document.getElementById('chat');
-    var safeVal = filterXSS(ele.value);
+    // var safeVal = filterXSS(ele.value);
+    var safeVal = ele.value;
     if (safeVal) {
         //发送前过滤XSS
         //发送
