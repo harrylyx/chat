@@ -149,7 +149,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                                              extensions=['markdown.extensions.extra',
                                                          'markdown.extensions.codehilite']),
             })
-        elif re.search('^\$\$.*\$\$$',str(message).encode('utf-8'),re.S):
+        elif re.search('^\$\$.*\$\$',str(message).encode('utf-8'),re.S):
             message = message.strip()
             message = '<img src="https://l.wordpress.com/latex.php?bg=ffffff&fg=000000&s=0&latex={0}" style="border:none;">'.format(message[2:-2])
             SocketHandler.send_to_all(self,{
