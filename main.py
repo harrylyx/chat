@@ -66,10 +66,11 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cursor.execute('select ip from blacklist')
         values = cursor.fetchall()  # 获取查询的值
         ip = tuple("'"+str(ip)+"'"+',')
+        timenow = time.strftime("%H:%M:%S", time.localtime())
         if ip in values:
             self.write_message(json.dumps({
                 'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'time':timenow,
                 'id':id(self)+12138,
                 'name': 'Master robot',
                 'messageType':3,
@@ -82,7 +83,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             super(self).on_close()
         else:
             cursor.execute("insert into online (id,ip,user_agent,time) values (%d,'%s','%s',%s)"
-                           %(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime())))
+                           %(id(self),ip,user_agent,timenow))
             cursor.close()
             cx.commit()
             cx.close()
@@ -96,7 +97,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             }))
             self.write_message(json.dumps({
                 'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
+                'time':timenow,
                 'id':id(self)+12138,
                 'name': 'Master robot',
                 'messageType':3,
@@ -116,12 +117,13 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         ip = self.request.headers.get("X-Real-IP")
         cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
         cursor = cx.cursor()
+        timenow = time.strftime("%H:%M:%S", time.localtime())
         try:
             cursor.execute("delete from online where id = %d"%(id(self)))
         except:
             pass
         cursor.execute("insert into offline (id,ip,user_agent,time) values (%d,'%s','%s',%s)"
-                       %(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime())))
+                       %(id(self),ip,user_agent,timenow))
         cursor.close()
         cx.commit()
         cx.close()
