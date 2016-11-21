@@ -8,7 +8,10 @@ import sys
 def getweather(local):
     reload(sys)
     sys.setdefaultencoding('utf8')
-    content = urllib2.urlopen('http://m.cncn.com/tianqi/%s'%(local)).read()
+    try:
+        content = urllib2.urlopen('http://m.cncn.com/tianqi/%s'%(local)).read()
+    except:
+        content = urllib2.urlopen('http://m.cncn.com/tianqi/%s'%('bj')).read()
     soup = BeautifulSoup(content,"lxml")
     result = ''
     r = ''
