@@ -13,7 +13,6 @@ def getweather(local):
     except:
         content = urllib2.urlopen('http://m.cncn.com/tianqi/%s'%('bj')).read()
     soup = BeautifulSoup(content,"lxml")
-    result = ''
     r = ''
     for child in soup.find_all('ul'):
         if child.attrs.get("class") == ['w_list']:
