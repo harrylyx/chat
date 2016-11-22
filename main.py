@@ -237,7 +237,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat",charset='utf8')
             cx.set_character_set('utf8')
             cursor = cx.cursor()
-            cursor.execute("SET message utf8")
+            cursor.execute("SET NAMES utf8")
             cursor.execute("insert into feedback (id,ip,user_agent,time,message) values (%d,'%s','%s','%s','%s')"%(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime()),feedback))
             cursor.close()
             cx.commit()
