@@ -109,7 +109,8 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'message': '''欢迎你,%s!
                            <br>我是这里的机器人,管理着这个聊天室
                            <br>如果你是第一次来到这里，可以发送\\help获取使用帮助
-                           <br>不要乱搞哦，我会看着你的.'''%(mname),
+                           <br>不要乱搞哦，我会看着你的.
+                           <br>如果有什么建议，欢迎使用<strong>\\feedback 内容</strong>给我反馈,我会帮你转告的.^_^'''%(mname),
             }))
             SocketHandler.send_to_all(self,{
                 'type': 'sys',
