@@ -234,7 +234,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             feedback = message[13:-4]
             user_agent = self.request.headers['user-agent'].replace("\'","|")
             ip = self.request.headers.get("X-Real-IP")
-            cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+            cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat",charset='utf8')
             cx.set_character_set('utf8')
             cursor = cx.cursor()
             message = message.encode('utf-8')
