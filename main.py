@@ -64,7 +64,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         except:
             user_agent = 'Null'
         ip = self.request.headers.get("X-Real-IP")
-        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cx = MySQLdb.connect("localhost", "chat", "chat123", "chat")
         cursor = cx.cursor()
         try:
             cursor.execute('select ip from blacklist')
@@ -108,9 +108,9 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
                 'messageType':3,
                 'message': '''欢迎你,%s!
                            <br>我是这里的机器人,管理着这个聊天室
-                           <br>如果你是第一次来到这里，可以发送\\help获取使用帮助
+                           <br>如果你是第一次来到这里，可以发送<strong>/help</strong>获取使用帮助
                            <br>不要乱搞哦，我会看着你的.
-                           <br>如果有什么建议，欢迎使用<strong>\\feedback 内容</strong>给我反馈,我会帮你转告的.^_^'''%(mname),
+                           <br>如果有什么建议，欢迎使用<strong>/feedback 内容</strong>给我反馈,我会帮你转告的.^_^'''%(mname),
             }))
             SocketHandler.send_to_all(self,{
                 'type': 'sys',
@@ -121,7 +121,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_close(self):
         user_agent = self.request.headers['user-agent'].replace("\'","|")
         ip = self.request.headers.get("X-Real-IP")
-        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cx = MySQLdb.connect("localhost", "chat", "chat123", "chat")
         cursor = cx.cursor()
         timenow = time.strftime("%H:%M:%S", time.localtime())
         try:
@@ -143,123 +143,61 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         mname = SocketHandler.get_name(self)
         if re.search('^```.*```', str(message).encode('utf-8'),re.S):
-            SocketHandler.send_to_all(self,{
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'name': mname,
-                'messageType':1,
-                'message': markdown.markdown(message,
-                                             extensions=['markdown.extensions.extra',
-                                                         'markdown.extensions.codehilite']),
-            })
+            message=markdown.markdown(message,extensions=['markdown.extensions.extra','markdown.extensions.codehilite'])
+            message_json=SocketHandler.get_json(self,'user',id(self),0,mname,1,message)
+            SocketHandler.send_to_all(self,message_json)
         elif re.search('^\$\$.*\$\$',str(message).encode('utf-8'),re.S):
             message = message.strip()
             message = '<img src="https://l.wordpress.com/latex.php?bg=ffffff&fg=000000&s=0&latex={0}" style="border:none;">'.format(message[2:-2])
-            SocketHandler.send_to_all(self,{
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'name': mname,
-                'messageType':2,
-                'message': message,
-            })
-        elif re.search('^\\\weather',str(message).encode('utf-8'),re.S):
+            message_json=SocketHandler.get_json(self,'user',id(self),0,mname,2,message)
+            SocketHandler.send_to_all(self,message_json)
+        elif re.search('^/weather',str(message).encode('utf-8'),re.S):
             try:
                 local = message[message.index(' ')+1:]
             except:
                 local='beijing'
-            message_bot = weather.getweather(local).replace('\n','<br>')
-            SocketHandler.send_to_all(self,{
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'name': mname,
-                'messageType':3,
-                'message': message,
-            })
-            SocketHandler.send_to_all(self,{
-                'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self)+12138,
-                'name': 'Weather robot',
-                'messageType':3,
-                'message': "%s's weather：<br>"%(local)+message_bot,
-            })
-        elif re.search('^\\\\news',str(message).encode('utf-8'),re.S):
-            message_bot = news.getnews().replace('\n','<br>')
-            SocketHandler.send_to_all(self,{
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'name': mname,
-                'messageType':3,
-                'message': message,
-            })
-            SocketHandler.send_to_all(self,{
-                'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self)+12138,
-                'name': 'News robot',
-                'messageType':3,
-                'message': 'Today News：<br>'+message_bot,
-            })
-        elif re.search('^\\\help',str(message).encode('utf-8'),re.S):
-            self.write_message(json.dumps({
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'itisme':1,
-                'name': mname,
-                'messageType':3,
-                'message': message,
-            }))
-            self.write_message(json.dumps({
-                'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self)+12138,
-                'name': 'Master robot',
-                'messageType':3,
-                'message': '''使用帮助:<br>本聊天室规定使用Enter换行,Ctrl+Enter发送
+            message_bot = "%s's weather：<br>"%(local)+weather.getweather(local).replace('\n','<br>')
+            message_json=SocketHandler.get_json(self,'user',id(self),1,mname,3,message)
+            SocketHandler.send_to_all(self,message_json)
+            message_json=SocketHandler.get_json(self,'bot',id(self)+12138,0,'Weather robot',3,message_bot)
+            SocketHandler.send_to_all(self,message_json)
+        elif re.search('^/news',str(message).encode('utf-8'),re.S):
+            message_bot = 'Today News：<br>'+news.getnews().replace('\n','<br>')
+            message_json=SocketHandler.get_json(self,'user',id(self),1,mname,3,message)
+            SocketHandler.send_to_all(self,message_json)
+            message_json=SocketHandler.get_json(self,'bot',id(self)+12138,0,'News robot',3,message_bot)
+            SocketHandler.send_to_all(self,message_json)
+        elif re.search('^/help',str(message).encode('utf-8'),re.S):
+            message_json=SocketHandler.get_json(self,'user',id(self),1,mname,3,message)
+            self.write_message(json.dumps(message_json))
+            message='''使用帮助:<br>本聊天室规定使用Enter换行,Ctrl+Enter发送
                                 <br>支持markdown语法发送<strong>代码</strong><br>Example:
                                 <br>```python<br>print('Hello world!')<br>```
                                 <br>支持使用LaTeX语法发送<strong>公式</strong><br>Example:<br>$$h = \\frac{1}{2}gt^2$$
-                                <br>支持使用<strong>\\weather 地点(拼音)</strong>查看天气
-                                <br>支持使用<strong>\\news</strong>查看新闻
-                                <br>如果有什么建议，欢迎使用<strong>\\feedback 内容</strong>给我们反馈''',
-            }))
-        elif re.search('^\\\\feedback',str(message).encode('utf-8'),re.S):
+                                <br>支持使用<strong>/weather 地点(拼音)</strong>查看天气
+                                <br>支持使用<strong>/news</strong>查看新闻
+                                <br>如果有什么建议，欢迎使用<strong>/feedback 内容</strong>给我们反馈'''
+            message_json=SocketHandler.get_json(self,'bot',id(self)+12138,0,'Master robot',3,message)
+            self.write_message(json.dumps(message_json))
+        elif re.search('^/feedback',str(message).encode('utf-8'),re.S):
             cleaner = lxml.html.clean.Cleaner(style=True, scripts=True, frames = True,
                                               forms = True,page_structure=False, safe_attrs_only=False)
             message = cleaner.clean_html(message)
             feedback = message[13:-4]
             user_agent = self.request.headers['user-agent'].replace("\'","|")
             ip = self.request.headers.get("X-Real-IP")
-            cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat",charset='utf8')
+            cx = MySQLdb.connect("localhost", "chat", "chat123", "chat",charset='utf8')
             cx.set_character_set('utf8')
             cursor = cx.cursor()
-            cursor.execute("SET NAMES utf8")
             cursor.execute("insert into feedback (id,ip,user_agent,time,message) values (%d,'%s','%s','%s','%s')"%(id(self),ip,user_agent,time.strftime("%H:%M:%S", time.localtime()),feedback))
             cursor.close()
             cx.commit()
             cx.close()
-            self.write_message(json.dumps({
-                'type': 'user',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
-                'itisme':1,
-                'name': mname,
-                'messageType':3,
-                'message': message,
-            }))
-            self.write_message(json.dumps({
-                'type': 'bot',
-                'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self)+12138,
-                'name': 'Master robot',
-                'messageType':3,
-                'message': '''我们已经收到你的反馈了，谢谢你!''',
-            }))
+            message_json=SocketHandler.get_json(self,'user',id(self),1,mname,3,message)
+            self.write_message(json.dumps(message_json))
+            message='我们已经收到你的反馈了，谢谢你!'
+            message_json=SocketHandler.get_json(self,'bot',id(self)+12138,0,'Master robot',3,message)
+            self.write_message(json.dumps(message_json))
         elif message == 'c93c60882b37254bb13e80183f291af3':
             pass
         else:
@@ -267,19 +205,25 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             cleaner = lxml.html.clean.Cleaner(style=True, scripts=True, frames = True,
                                               forms = True,page_structure=False, safe_attrs_only=False)
             message = cleaner.clean_html(message)
-            SocketHandler.send_to_all(self,{
-                'type': 'user',
+            message_json=SocketHandler.get_json(self,'user',id(self),0,mname,3,message)
+            SocketHandler.send_to_all(self,message_json)
+
+    def get_json(self,type,realid,itisme,mname,messageType,message):
+        jsonmessage={
+                'type': type,
                 'time':time.strftime("%H:%M:%S", time.localtime()),
-                'id':id(self),
+                'id':realid,
+                'itisme':itisme,
                 'name': mname,
-                'messageType':3,
+                'messageType':messageType,
                 'message': message,
-            })
+            }
+        return jsonmessage
 
     def check_ip(self):
         user_agent = self.request.headers['user-agent'].replace("\'","|")
         ip = self.request.headers.get("X-Real-IP")
-        cx = MySQLdb.connect("localhost", "root", "lyx15&lyx", "chat")
+        cx = MySQLdb.connect("localhost", "chat", "chat123", "chat")
         cursor = cx.cursor()
         cursor.execute('select ip from offline')
         values_ip = cursor.fetchall()  # 获取查询ip
@@ -299,6 +243,17 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         cx.commit()
         cx.close()
 
+DIR = "/upload/"
+class UploadHandle(tornado.web.RequestHandler):
+     def post(self, *args, **kwargs):
+        fileinfo = self.request.files["file"][0]
+        fname = fileinfo['filename']
+        cname = DIR+time.strftime("%Y%m%d%H%M%S", time.localtime())+"."+fname.split(".")[-1]
+        fh = open(cname, 'w')
+        fh.write(fileinfo['body'])
+        self.finish("success")
+        fh.close()
+        self.write(cname)
 
 
 
@@ -315,6 +270,7 @@ if __name__ == '__main__':
     app = tornado.web.Application([
         ('/', Index),
         ('/soc', SocketHandler),
+        ('/upload', UploadHandle),
     ],**settings
     )
     app.listen(7001,address='0.0.0.0')
