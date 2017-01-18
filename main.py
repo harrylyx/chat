@@ -16,8 +16,6 @@ import weather
 import news
 
 
-
-
 class Index(tornado.web.RequestHandler):
     def get(self):
         self.set_cookie('foo', 'bar', httponly=True, secure=True)
@@ -246,14 +244,38 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
 DIR = "/upload/"
 class UploadHandle(tornado.web.RequestHandler):
      def post(self, *args, **kwargs):
-        fileinfo = self.request.files["file"][0]
-        fname = fileinfo['filename']
-        cname = DIR+time.strftime("%Y%m%d%H%M%S", time.localtime())+"."+fname.split(".")[-1]
-        fh = open(cname, 'w')
-        fh.write(fileinfo['body'])
-        self.finish("success")
-        fh.close()
-        self.write(cname)
+         fileinfo = self.request.files["file"][0]
+         fname = fileinfo['filename']
+         cname = DIR+time.strftime("%Y%m%d%H%M%S", time.localtime())+"."+fname.split(".")[-1]
+         fh = open(cname, 'w')
+         fh.write(fileinfo['body'])
+         self.finish("success")
+         fh.close()
+         self.write(cname)
+
+
+class Weather(tornado.web.RequestHandler):
+    def get(self, input_city):
+        try:
+            if re.match('^[a-zA-Z]+$', input_city):
+                local = input_city
+            else:
+                local='beijing'
+        except:
+            local = 'beijing'
+        text = weather.getweather(local).split('\n')
+        today = text[0][0:text[0].index(' ')]
+        today_situation = text[1]
+        today_temperature = text[2]
+        tomorrow = text[4][0:text[4].index(' ')]
+        tomorrow_situation = text[5]
+        tomorrow_temperature = text[6]
+        self.write(json.dumps({'today': today,
+                               'today_situation': today_situation,
+                               'today_temperature': today_temperature,
+                               'tomorrow': tomorrow,
+                               'tomorrow_situation': tomorrow_situation,
+                               'tomorrow_temperature': tomorrow_temperature}, ensure_ascii=False))
 
 
 
@@ -271,6 +293,7 @@ if __name__ == '__main__':
         ('/', Index),
         ('/soc', SocketHandler),
         ('/upload', UploadHandle),
+        (r"/weather/(\w+)", Weather),
     ],**settings
     )
     app.listen(7001,address='0.0.0.0')
