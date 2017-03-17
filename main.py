@@ -278,11 +278,6 @@ class Weather(tornado.web.RequestHandler):
                                'tomorrow_temperature': tomorrow_temperature}, ensure_ascii=False))
 
 
-class Kaoyan(tornado.web.RequestHandler):
-    def get(self):
-        self.set_cookie('foo', 'bar', httponly=True, secure=True)
-        self.set_secure_cookie('foo', 'bar', httponly=True, secure=True)
-        self.render('templates/kaoyan.html')
 
 
 if __name__ == '__main__':
@@ -300,7 +295,6 @@ if __name__ == '__main__':
         ('/soc', SocketHandler),
         ('/upload', UploadHandle),
         (r"/weather/(\w+)", Weather),
-        ('/ky/', Kaoyan),
     ],**settings
     )
     app.listen(7001,address='0.0.0.0')
