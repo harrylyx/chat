@@ -146,7 +146,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             SocketHandler.send_to_all(self,message_json)
         elif re.search('^\$\$.*\$\$',str(message).encode('utf-8'),re.S):
             message = message.strip()
-            message = '<img src="https://l.wordpress.com/latex.php?bg=ffffff&fg=000000&s=0&latex={0}" style="border:none;">'.format(message[2:-2])
+            message = '<img src="https://latex.codecogs.com/gif.latex?{0}" style="border:none;">'.format(message[2:-2])
             message_json=SocketHandler.get_json(self,'user',id(self),0,mname,2,message)
             SocketHandler.send_to_all(self,message_json)
         elif re.search('^/weather',str(message).encode('utf-8'),re.S):
