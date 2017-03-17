@@ -300,7 +300,7 @@ if __name__ == '__main__':
         ('/soc', SocketHandler),
         ('/upload', UploadHandle),
         (r"/weather/(\w+)", Weather),
-        ('/ky', Kaoyan),
+        ('/ky/', Kaoyan),
     ],**settings
     )
     app.listen(7000,address='0.0.0.0')
