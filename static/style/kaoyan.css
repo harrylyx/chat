@@ -160,3 +160,21 @@
     right: 0;
     bottom: 0;
 }
+
+.kaoyan{
+    font-size: 40px;
+    text-align: center;
+    font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+    -webkit-transition:font-size 0.2s ease-out;
+}
+
+@media only screen and (max-width: 1200px) { .kaoyan{ font-size: 39px; }}
+@media only screen and (max-width: 1100px) { .kaoyan{ font-size: 38px; }}
+@media only screen and (max-width: 1000px) { .kaoyan{ font-size: 37px; }}
+@media only screen and (max-width: 900px) { .kaoyan{ font-size: 36px; }}
+@media only screen and (max-width: 800px) { .kaoyan{ font-size: 35px; }}
+@media only screen and (max-width: 700px) { .kaoyan{ font-size: 34px; }}
+@media only screen and (max-width: 600px) { .kaoyan{ font-size: 33px; }}
+@media only screen and (max-width: 500px) { .kaoyan{ font-size: 32px; }}
+@media only screen and (max-width: 400px) { .kaoyan{ font-size: 31px; }}
+@media only screen and (max-width: 300px) { .kaoyan{ font-size: 30px; }}
