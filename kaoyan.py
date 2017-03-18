@@ -5,6 +5,7 @@ import sys
 import os
 import urllib
 import urllib2
+import MySQLdb
 
 class Index(tornado.web.RequestHandler):
     def get(self):
@@ -22,6 +23,17 @@ class Pic(tornado.web.RequestHandler):
         pic_url = eval(pic_eval)['images'][0]['url']
         self.write('http://s.cn.bing.net'+pic_url)
 
+
+class Proverb(tornado.web.RequestHandler):
+    def get(self, num):
+        cx = MySQLdb.connect(host="localhost", user = "root", passwd = "lyx15&lyx", db = "chat", charset = "utf8")
+        cx.set_character_set('utf8')
+        cursor = cx.cursor()
+        cursor.execute('select * from proverb where id = %d'%(num))
+        values = cursor.fetchall()  # 获取查询的值
+        self.write(values)
+
+
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
@@ -36,6 +48,7 @@ if __name__ == '__main__':
     app = tornado.web.Application([
         ('/', Index),
         ('/pic', Pic),
+        (r"/proverb/(\w+)", Proverb),
     ],**settings
     )
     app.listen(6666,address='0.0.0.0')
