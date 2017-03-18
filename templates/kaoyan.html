@@ -20,6 +20,12 @@
 
 <link href="../static/style/bootstrap-responsive.css" rel="stylesheet" media="screen" />
 
+<style type="text/css">
+    .author{
+        text-align: center;
+    }
+</style>
+
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 
 <!--[if lt IE 9]>
@@ -77,14 +83,8 @@
     </div>
     <div class="proverb">芝兰生于幽林，不以无人而不芳；<br>
     君子修道立德，不为穷困而改节。</div>
+    <div class="author">孔子</div>
   </div>
-
-
-
-
-
-
-
 
 <!-- Le javascript
     ================================================== --> 
@@ -93,40 +93,48 @@
 
 <script src="../static/scripts/jquery.js"></script>
 
-
-
 <script src="../static/scripts/bootstrap-tooltip.js"></script> 
 
 <script type="text/javascript" src="../static/scripts/jquery.countdown.min.js"></script> 
 
-
-
 <script type="text/javascript" src="../static/scripts/jquery.custom.js"></script>
 
 </script>
-<!-- <script type="text/javascript">
-  var bd  = document.getElementsByTagName("body")[0];
+<script type="text/javascript">
         var xhr9 = new XMLHttpRequest();
         var text;
+        var Url1;
         xhr9.onreadystatechange = function(text){
             if(xhr9.readyState == 4){
                 if(xhr9.status == 200){
-                    text = xhr9.responseText;
-                    aa(bd,text);
+                    text = JSON.parse(xhr9.responseText);
+                    change(text);
                 } else{
                     console.log("false");
                 }
             }   
         }
 
-    var url = "https://ky.crazyc.cn/pic";
-    xhr9.open("get", url,true);
+    var url = "https://ky.crazyc.cn/proverb/";
+    xhr9.open("get", Url1,true);
     xhr9.send(null);
-    
-    function aa(option,text){
-        option.style.backgroundImage = "url("+text+")";
+
+    function leftDays(url) {
+        var date = new Date();
+        var leftMonth = 12 - (date.getMonth() + 1);
+        var nowDay = 30 - date.getDate();
+        var API = leftMonth*30 + nowDay;
+        Url1 = url + API;
     }
-</script> -->
+    leftDays(url);
+
+    function change(text) {
+        var proverb1 = document.getElmentsByClassName("proverb")[0];
+        var author1 = document.getElmentsByClassName("author")[0];
+        proverb1.innerHTML = text.content;
+        author1.innerHTML = text.author;
+    }
+</script>
 </div>
 
 </body>
