@@ -7,7 +7,6 @@ import urllib
 import urllib2
 import MySQLdb
 import json
-import urllib
 
 class Index(tornado.web.RequestHandler):
     def get(self):
@@ -41,7 +40,6 @@ if __name__ == '__main__':
     }
     app = tornado.web.Application([
         ('/', Index),
-        ('/pic', Pic),
         (r"/proverb/(\w+)", Proverb),
     ],**settings
     )

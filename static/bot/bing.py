@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import urllib
+import urllib2
 
 false = 0
 url = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US"
@@ -10,3 +11,4 @@ pic_url = eval(pic_eval)['images'][0]['url']
 url = 'http://s.cn.bing.net'+pic_url
 local="../images/bg-main.jpg"
 urllib.urlretrieve(url,local)
+print url
