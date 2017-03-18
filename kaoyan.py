@@ -32,10 +32,9 @@ class Proverb(tornado.web.RequestHandler):
         cx.set_character_set('utf8')
         cursor = cx.cursor()
         cursor.execute('select * from proverb where id = %d'%(num))
-        values = cursor.fetchall()  # 获取查询的值
+        values = cursor.fetchall()
         values = values.decode('raw_unicode_escape')
-        self.write(json.dumps({'today': values}
-                               , ensure_ascii=False))
+        self.write(json.dumps({'today': values}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
