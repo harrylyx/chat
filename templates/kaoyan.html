@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -24,27 +23,17 @@
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 
 <!--[if lt IE 9]>
-
       <script src="../static/scripts/html5shiv.js"></script>
-
     <![endif]-->
 
 <style>
-
 @font-face {
-
     font-family: 'JournalRegular';
-
     src: url('../static/font/journal-webfont.eot');
-
     src: url('../static/font/journal-webfont_162a16fe.eot') format('embedded-opentype'), url('../static/font/journal-webfont.woff') format('woff'), url('../static/font/journal-webfont.ttf') format('truetype'), url('../static/font/journal-webfont.svg') format('svg');
-
     font-weight: normal;
-
     font-style: normal;
-
 }
-
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -90,21 +79,14 @@
     君子修道立德，不为穷困而改节。</div>
   </div>
 
-</div>
 
 
 
 
-
-</div>
-
-
-</div>
 
 
 
 <!-- Le javascript
-
     ================================================== --> 
 
 <!-- Placed at the end of the document so the pages load faster --> 
@@ -121,7 +103,31 @@
 
 <script type="text/javascript" src="../static/scripts/jquery.custom.js"></script>
 
-</script></div>
+</script>
+<script type="text/javascript">
+  var bd  = document.getElementsByTagName("div")[0];
+        var xhr9 = new XMLHttpRequest();
+        var text;
+        xhr9.onreadystatechange = function(text){
+            if(xhr9.readyState == 4){
+                if(xhr9.status == 200){
+                    text = xhr9.responseText;
+                    aa(bd,text);
+                } else{
+                    console.log("false");
+                }
+            }   
+        }
+
+    var url = "https://ky.crazyc.cn/pic";
+    xhr9.open("get", url,true);
+    xhr9.send(null);
+    
+    function aa(option,text){
+        option.style.backgroundImage = "url("+text+")";
+    }
+</script>
+</div>
 
 </body>
 
