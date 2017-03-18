@@ -27,6 +27,7 @@ class Pic(tornado.web.RequestHandler):
 
 class Proverb(tornado.web.RequestHandler):
     def get(self, num):
+        values = ''
         cx = MySQLdb.connect(host="localhost", user = "root", passwd = "lyx15&lyx", db = "chat", charset = "utf8")
         cx.set_character_set('utf8')
         cursor = cx.cursor()
