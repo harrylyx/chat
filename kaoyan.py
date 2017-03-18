@@ -33,8 +33,9 @@ class Proverb(tornado.web.RequestHandler):
         cursor = cx.cursor()
         cursor.execute('select * from proverb where id = %d'%(int(num))
         values = cursor.fetchall()
-        values = values.decode('raw_unicode_escape')
-        self.write(json.dumps({'today': values}, ensure_ascii=False))
+        content = values[1].decode('raw_unicode_escape')
+        author = values[2].decode('raw_unicode_escape')
+        self.write(json.dumps({'content': content,'author': author}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
