@@ -6,6 +6,7 @@ import os
 import urllib
 import urllib2
 import MySQLdb
+import json
 
 class Index(tornado.web.RequestHandler):
     def get(self):
@@ -31,7 +32,8 @@ class Proverb(tornado.web.RequestHandler):
         cursor = cx.cursor()
         cursor.execute('select * from proverb where id = %d'%(num))
         values = cursor.fetchall()  # 获取查询的值
-        self.write(values)
+        self.write(json.dumps({'today': values}
+                               , ensure_ascii=False))
 
 
 if __name__ == '__main__':
