@@ -29,7 +29,7 @@ class Proverb(tornado.web.RequestHandler):
         cx = MySQLdb.connect(host="localhost", user = "root", passwd = "lyx15&lyx", db = "chat", charset = "utf8")
         cx.set_character_set('utf8')
         cursor = cx.cursor()
-        cursor.execute('select * from proverb where id = %d'%(num))
+        cursor.execute('select * from proverb where id = %d'%(int(num))
         values = cursor.fetchall()  # 获取查询的值
         self.write(values)
 
