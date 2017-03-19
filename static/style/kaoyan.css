@@ -60,6 +60,8 @@
 
 .clock {
     position: relative;
+    top: 70px;
+    padding-bottom: 15px;
     background-color: rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
@@ -174,7 +176,7 @@
 .proverb{
     margin-top: 50px;
     font-size: 20px;
-    line-height: 50px;
+    line-height: 25px;
     text-align: center;
     font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
 }
