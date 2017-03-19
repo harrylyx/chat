@@ -116,8 +116,7 @@
         }
 
     var url = "https://ky.crazyc.cn/proverb/";
-    xhr9.open("get", Url1,true);
-    xhr9.send(null);
+    
 
     function leftDays(url) {
         var date = new Date();
@@ -134,6 +133,8 @@
         proverb1.innerHTML = text.content;
         author1.innerHTML = text.author;
     }
+    xhr9.open("get", Url1,true);
+    xhr9.send(null);
 </script>
 </div>
 
