@@ -60,6 +60,10 @@
 
 .clock {
     position: relative;
+    top: 70px;
+    padding-bottom: 15px;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
 }
 
 .clock .span6{
@@ -162,6 +166,7 @@
 }
 
 .kaoyan{
+    margin-top: 30px;
     font-size: 40px;
     text-align: center;
     font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
@@ -171,7 +176,7 @@
 .proverb{
     margin-top: 50px;
     font-size: 20px;
-    line-height: 50px;
+    line-height: 25px;
     text-align: center;
     font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
 }
